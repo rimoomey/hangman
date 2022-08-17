@@ -34,19 +34,39 @@ class Game
     corrects
   end
 
+  def win?(secret_word, correct_guesses)
+    secret_word.split('').each do |value|
+      return false unless correct_guesses.include?(value)
+    end
+    true
+  end
+
+  def guessed_correctly?(secret_word, guess)
+    if secret_word.split('').include?(guess)
+      success_output
+      0
+    else
+      1
+    end
+  end
+
   def new_game
-    instructions
+    print_instructions
     secret_word = choose_secret_word
+    win = false
     guesses = []
 
     turn = 1
 
-    until turn > @max_turns_per_game
+    until turn > @max_turns_per_game || win
       prompt_guess(turn, @max_turns_per_game)
-      guesses.push gets.chomp
+      guess = gets.chomp
+      guesses.push guess
       correct_guesses = correct_guesses(secret_word, guesses)
       show_correct_letters(correct_guesses, guesses)
-      turn += 1
+
+      win = win?(secret_word, correct_guesses)
+      turn += guessed_correctly?(secret_word, guess)
     end
     reveal_word(secret_word)
   end

@@ -2,13 +2,18 @@
 
 # Module for the game's text responses.
 module Text
-  def instructions
+  def print_instructions
     puts '<Instructions go here>'
   end
 
   def prompt_guess(turn_number, max_turns)
-    puts "This is turn ##{turn_number} out of #{max_turns}."
+    puts "You have #{max_turns - turn_number + 1} turns left."
     puts 'Guess a letter (A-Z):'
+  end
+
+  def success_output
+    puts 'You got one!'
+    puts ''
   end
 
   def show_correct_letters(correct_guesses, all_guesses)
