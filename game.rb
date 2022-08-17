@@ -7,7 +7,7 @@ require_relative './text'
 class Game
   include FileHandler
   include Text
-  attr_reader :secret_word, :max_turns_per_game,
+  attr_reader :max_turns_per_game,
               :turns_left, :letters_guessed
 
   def initialize(max_turns_per_game)
@@ -37,9 +37,10 @@ class Game
     corrects
   end
 
-  def win?(correct_guesses)
+  def win?
+    corrects = correct_guesses
     @secret_word.split('').each do |value|
-      return false unless correct_guesses.include?(value)
+      return false unless corrects.include?(value)
     end
     true
   end
@@ -53,17 +54,23 @@ class Game
     end
   end
 
+  def let_user_guess
+    prompt_guess(@turns_left)
+    current_guess = gets.chomp
+    @letters_guessed.push current_guess
+
+    current_guess
+  end
+
   def new_game(dictionary)
     print_instructions
     choose_secret_word(dictionary)
-    win = false
+    solved = false
 
-    while @turns_left.positive? && !win
-      prompt_guess(@turns_left)
-      current_guess = gets.chomp
-      @letters_guessed.push current_guess
+    while @turns_left.positive? && !solved
+      current_guess = let_user_guess
 
-      win = win?(correct_guesses)
+      solved = win?
 
       @turns_left -= guessed_correctly?(current_guess)
       show_correct_letters(correct_guesses, @letters_guessed)
