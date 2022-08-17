@@ -45,13 +45,15 @@ class Game
       prompt_guess(turn, @max_turns_per_game)
       guesses.push gets.chomp
       correct_guesses = correct_guesses(secret_word, guesses)
+      show_correct_letters(correct_guesses, guesses)
       turn += 1
     end
+    reveal_word(secret_word)
   end
 end
 
 dictionary_file = './google-10000-english.txt'
-max_turns = 10
+max_turns = 15
 
 hangman = Game.new(dictionary_file, max_turns)
 hangman.new_game
