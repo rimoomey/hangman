@@ -1,0 +1,12 @@
+---
+:max_turns_per_game: 15
+:secret_word: districts
+:letters_guessed:
+- a
+- i
+- u
+- u
+- o
+- i
+- a
+:turns_left: 11

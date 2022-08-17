@@ -10,11 +10,11 @@ class Game
   attr_reader :max_turns_per_game,
               :turns_left, :letters_guessed
 
-  def initialize(max_turns_per_game)
+  def initialize(max_turns_per_game, dictionary = '')
     @max_turns_per_game = max_turns_per_game
     @turns_left = max_turns_per_game
     @letters_guessed = []
-    @secret_word = ' '
+    @secret_word = choose_secret_word(dictionary)
   end
 
   def choose_secret_word(file_name)
@@ -62,9 +62,29 @@ class Game
     current_guess
   end
 
-  def new_game(dictionary)
+  def to_yaml
+    YAML.dump({
+      max_turns_per_game: @max_turns_per_game,
+      secret_word: @secret_word,
+      letters_guessed: @letters_guessed,
+      turns_left: @turns_left
+    })
+  end
+
+  def load_from_yaml
+    data = YAML.load(
+      load_file,
+      permitted_classes: [Game, Symbol]
+    )
+
+    @secret_word = data[:secret_word]
+    @max_turns_per_game = data[:max_turns_per_game]
+    @letters_guessed = data[:letters_guessed]
+    @turns_left = data[:turns_left]
+  end
+
+  def new_game
     print_instructions
-    choose_secret_word(dictionary)
     solved = false
 
     while @turns_left.positive? && !solved
@@ -76,7 +96,7 @@ class Game
       show_correct_letters(correct_guesses, @letters_guessed)
 
       save_prompt
-      save_game if gets.chomp.upcase == 'Y'
+      save_game(to_yaml) if gets.chomp.upcase == 'Y'
     end
     reveal_word(@secret_word, win)
   end

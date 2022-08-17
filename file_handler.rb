@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 require 'yaml'
+require_relative './game'
 
 # handle input from dictionary and output to save
 module FileHandler
@@ -16,7 +17,11 @@ module FileHandler
     'That line is out of bounds.'
   end
 
-  def save_game
-    File.write('./save_slot', YAML.dump(self))
+  def save_game(yaml_string)
+    File.write('./save_slot.yml', yaml_string)
+  end
+
+  def load_file
+    File.open('./save_slot.yml', 'r').read
   end
 end
