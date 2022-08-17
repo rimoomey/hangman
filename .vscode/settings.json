@@ -1,0 +1,6 @@
+{
+  // If not specified searches for 'rubocop' executable available on PATH (default and recommended)
+  "ruby.rubocop.executePath": "",
+  "ruby.rubocop.configFilePath": "./.rubocop.yml",
+  "ruby.rubocop.onSave": true
+}
