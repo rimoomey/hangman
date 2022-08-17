@@ -11,6 +11,10 @@ module Text
     puts 'Guess a letter (A-Z):'
   end
 
+  def save_prompt
+    puts 'Would you like to save? (Y/N)'
+  end
+
   def success_output
     puts 'You got one!'
     puts ''

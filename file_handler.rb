@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+require 'yaml'
+
 # handle input from dictionary and output to save
 module FileHandler
   def get_entire_contents(file_name)
@@ -12,5 +14,9 @@ module FileHandler
       return line.delete("\n") if index + 1 == linenum
     end
     'That line is out of bounds.'
+  end
+
+  def save_game
+    File.write('./save_slot', YAML.dump(self))
   end
 end

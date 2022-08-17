@@ -1,0 +1,6 @@
+--- !ruby/object:Game
+max_turns_per_game: 15
+turns_left: 15
+letters_guessed:
+- a
+secret_word: interstate

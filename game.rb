@@ -74,13 +74,10 @@ class Game
 
       @turns_left -= guessed_correctly?(current_guess)
       show_correct_letters(correct_guesses, @letters_guessed)
+
+      save_prompt
+      save_game if gets.chomp.upcase == 'Y'
     end
     reveal_word(@secret_word, win)
   end
 end
-
-dictionary_file = './google-10000-english.txt'
-max_turns = 15
-
-hangman = Game.new(max_turns)
-hangman.new_game(dictionary_file)
