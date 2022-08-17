@@ -9,7 +9,7 @@ module FileHandler
 
   def get_specific_line(file_name, linenum)
     File.open(file_name, 'r').each_with_index do |line, index|
-      return line if index + 1 == linenum
+      return line.delete("\n") if index + 1 == linenum
     end
     'That line is out of bounds.'
   end

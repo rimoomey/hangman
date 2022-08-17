@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 require_relative './file_handler'
-require_relative './text.rb'
+require_relative './text'
 
 # Hangman
 class Game
@@ -23,16 +23,28 @@ class Game
     word
   end
 
+  def correct_guesses(secret_word, guesses)
+    corrects = Array.new(secret_word.length)
+    corrects = corrects.map { '_' }
+
+    secret_word.split('').each_with_index do |value, index|
+      corrects[index] = value if guesses.include?(value)
+    end
+
+    corrects
+  end
+
   def new_game
     instructions
     secret_word = choose_secret_word
-    guess = ''
+    guesses = []
 
     turn = 1
 
     until turn > @max_turns_per_game
       prompt_guess(turn, @max_turns_per_game)
-      guess = gets.chomp
+      guesses.push gets.chomp
+      correct_guesses = correct_guesses(secret_word, guesses)
       turn += 1
     end
   end
