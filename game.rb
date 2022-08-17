@@ -7,11 +7,14 @@ require_relative './text'
 class Game
   include FileHandler
   include Text
-  attr_reader :dictionary_file_path, :max_turns_per_game
+  attr_reader :dictionary_file_path, :max_turns_per_game,
+              :turns_left, :letters_guessed
 
   def initialize(dictionary, max_turns_per_game)
     @dictionary_file_path = dictionary
     @max_turns_per_game = max_turns_per_game
+    @turns_left = max_turns_per_game
+    @letters_guessed = []
   end
 
   def choose_secret_word
@@ -23,12 +26,12 @@ class Game
     word
   end
 
-  def correct_guesses(secret_word, guesses)
+  def correct_guesses(secret_word)
     corrects = Array.new(secret_word.length)
     corrects = corrects.map { '_' }
 
     secret_word.split('').each_with_index do |value, index|
-      corrects[index] = value if guesses.include?(value)
+      corrects[index] = value if @letters_guessed.include?(value)
     end
 
     corrects
@@ -54,21 +57,18 @@ class Game
     print_instructions
     secret_word = choose_secret_word
     win = false
-    guesses = []
 
-    turn = 1
+    while @turns_left.positive? && !win
+      prompt_guess(@turns_left)
+      current_guess = gets.chomp
+      @letters_guessed.push current_guess
 
-    until turn > @max_turns_per_game || win
-      prompt_guess(turn, @max_turns_per_game)
-      guess = gets.chomp
-      guesses.push guess
-      correct_guesses = correct_guesses(secret_word, guesses)
-      show_correct_letters(correct_guesses, guesses)
+      win = win?(secret_word, correct_guesses(secret_word))
 
-      win = win?(secret_word, correct_guesses)
-      turn += guessed_correctly?(secret_word, guess)
+      @turns_left -= guessed_correctly?(secret_word, current_guess)
+      show_correct_letters(correct_guesses(secret_word), @letters_guessed)
     end
-    reveal_word(secret_word)
+    reveal_word(secret_word, win)
   end
 end
 

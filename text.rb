@@ -6,8 +6,8 @@ module Text
     puts '<Instructions go here>'
   end
 
-  def prompt_guess(turn_number, max_turns)
-    puts "You have #{max_turns - turn_number + 1} turns left."
+  def prompt_guess(turn_number)
+    puts "You have #{turn_number} turns left."
     puts 'Guess a letter (A-Z):'
   end
 
@@ -24,7 +24,11 @@ module Text
     puts all_guesses.join(', ')
   end
 
-  def reveal_word(secret_word)
-    puts "The secret word was '#{secret_word}'"
+  def reveal_word(secret_word, win)
+    if win
+      puts 'You win!'
+    else
+      puts "The secret word was '#{secret_word}'"
+    end
   end
 end
