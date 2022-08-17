@@ -6,7 +6,8 @@ module Text
     puts '<Instructions go here>'
   end
 
-  def prompt_guess
+  def prompt_guess(turn_number, max_turns)
+    puts "This is turn ##{turn_number} out of #{max_turns}."
     puts 'Guess a letter (A-Z):'
   end
 end

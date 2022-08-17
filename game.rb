@@ -1,14 +1,17 @@
 # frozen_string_literal: false
 
 require_relative './file_handler'
+require_relative './text.rb'
 
 # Hangman
 class Game
   include FileHandler
-  attr_reader :dictionary_file_path
+  include Text
+  attr_reader :dictionary_file_path, :max_turns_per_game
 
-  def initialize(dictionary)
+  def initialize(dictionary, max_turns_per_game)
     @dictionary_file_path = dictionary
+    @max_turns_per_game = max_turns_per_game
   end
 
   def choose_secret_word
@@ -19,8 +22,24 @@ class Game
 
     word
   end
+
+  def new_game
+    instructions
+    secret_word = choose_secret_word
+    guess = ''
+
+    turn = 1
+
+    until turn > @max_turns_per_game
+      prompt_guess(turn, @max_turns_per_game)
+      guess = gets.chomp
+      turn += 1
+    end
+  end
 end
 
 dictionary_file = './google-10000-english.txt'
+max_turns = 10
 
-puts Game.new(dictionary_file).choose_secret_word
+hangman = Game.new(dictionary_file, max_turns)
+hangman.new_game
